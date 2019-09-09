@@ -3,10 +3,10 @@
 
 int main()
 {
-    char job[9];
-    printf("Введите название фирмы\n");
-    scanf("%s",job);
-    printf(job);
+    char firm1[9], firm2[9], firm3[9];
+    printf("Введите название фирмы, количество продуктов, годовой объем продажи($) и часть рынка(%) \n");
+    scanf("%s",firm1);
+    printf(firm);
     printf("\n");
 
 
