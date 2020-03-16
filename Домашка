@@ -1,0 +1,131 @@
+#include <iostream>
+
+using namespace std;
+
+
+
+
+struct fio
+    {
+        char firstname[20];
+        char fathername[20];
+        char lastname[20];
+    };
+
+
+struct address
+    {
+        char street[20];
+        int housenumber;
+        int blocknumber;
+    };
+
+
+struct anketa
+    {
+        struct fio fio1;
+        struct address house;
+        bool pol;
+        int age;
+    };
+
+
+struct result
+    {
+        char street[20];
+        int count;
+    };
+
+bool compareStreets(char street1[20],char street2[20])
+{
+	bool res = true;
+	for (int i=0; i<20; i++){
+		if (street1[i]!=street2[i])
+		{
+			res = false;
+		}
+	}
+	return res;
+}
+
+int job(anketa ank[], int size)
+    {
+        
+        result *ul = new result[size]; 
+        
+	int k = 0;
+	for(int i=0; i<size;i++)
+            {
+		bool used = false;
+		for (int j=0; j<size; j++)
+		{
+			bool c = compareStreets(ul[j].street,ank[i].house.street);
+			if (c){
+				used = true;
+				if (ank[i].pol && (ank[i].age > 18 && ank[i].age < 60))
+				{ul[j].count++;};
+			};
+		};
+		if (!used){
+			result locResult;
+			char s[20];
+			copy(ank[i].house.street,ank[i].house.street + 20, locResult.street);
+			if (ank[i].pol && (ank[i].age > 18 && ank[i].age < 60))
+			{
+				locResult.count = 1;
+			}
+			else {
+				locResult.count = 0;
+			}
+			ul[k] = locResult; 
+			k++;
+		
+		};
+		
+		
+            };
+
+	for (int i=0; i<(size-1);i++)
+	{	
+		cout << "ul street: " << ul[i].street << " count: " << ul[i].count << endl;
+	}
+	return 0;
+	//        return result;
+    };
+
+
+int main()
+{
+    int size = 4;
+    // Address array test generation:
+    address adrArray[size] = 
+    { 
+	    {"heaven",1, 70},
+	    {"heaven",1, 15},
+	    {"earth",2,12},
+	    {"hell",5,8}
+    };
+    // Fio array test generation:
+    fio fioArray[size] =
+    {
+   	{"Ivan", "Ivanovich", "Ivanov"},
+	{"Petr", "Petrovich", "Petrov"},
+	{"Olga", "Petrovna", "Petrova"},
+	{"Vasily","Vasilievich", "Vasilev"}
+    };
+
+    // Ankets array test generation:
+
+    anketa ankArray[size] =
+    {
+	    {fioArray[0], adrArray[0],1,70},
+	    {fioArray[1], adrArray[1],1,35},
+	    {fioArray[2], adrArray[2],0,50},
+	    {fioArray[3], adrArray[3],1,45},
+    };
+    int n = job(ankArray, size);
+    
+    //cout <<  job(anketaArr, 3) << endl;
+
+    return 0;
+}
