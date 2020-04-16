@@ -1,0 +1,105 @@
+#include <iostream>
+
+using namespace std;
+
+int main()
+{
+    
+    struct el 
+        { 
+            struct el* pred;
+            float ELEM;
+            struct el* posl;
+        } EL1,*pTEK,*pPRED,*temp, *pSTART1,*pEND1,*vremPosl,*newTek;
+
+    int i,z,flag=0,elemsCount=0;
+    
+    float znach=0,newZnach=0;
+    
+    bool regime = false;
+    bool otvet = false;
+
+    for(;;)
+    {
+        cout<<"\nввести элемент?";cin>>z;
+        if (z<1) break;
+        pTEK=(struct el*)(malloc(sizeof(EL1))); //выделенная память //заносится в указатель
+        //на текущий элемент
+        cout<<" \nэлемент=";cin>>pTEK->ELEM; //первоначальное
+        elemsCount++;
+        //определение полей элемента
+        pTEK->pred=0;
+        pTEK->posl=0; // списка
+        //при создании первого элемента сохраняются соответствующие адреса
+        if(flag==0){pSTART1=pTEK;pPRED=pTEK;
+        pEND1=pTEK;flag=1; continue;}
+        pPRED->posl=pTEK; // заполнение полей
+        pTEK->pred=pPRED; // элементов списка
+        pEND1=pPRED=pTEK; // изменение указателей на конец списка // и предыдущий элемент
+    }
+
+    pTEK=pSTART1;
+    cout<<"\nадрес нач элем:"<<pSTART1;
+    do {
+        cout<<"\n "<<pTEK->pred<<" "<<pTEK->ELEM<<" "<<pTEK->posl;
+        pTEK=pTEK->posl;
+    } while(pTEK!=0);
+    cout<<"\nадрес кон элем:"<<pEND1;
+    
+    do
+    {
+        int n;
+        cout <<"\nВвести число после первого нахождения или после каждого? 1 - после первого, 0 - после каждого: ";
+        cin >> n;
+        if ((n==0)||(n==1))
+        {
+            if(n==0)
+            {
+                regime = false;
+            }
+            else
+            {
+                regime = true;
+            }
+            otvet = true;   
+        } else
+        {
+            cout << "\nВведите 1 или 0.";
+        };
+    } while (otvet == false);
+    
+    cout << "\nВведите число  для поиска: ";
+    cin >> znach;
+    
+    cout << "\nВведите число для добавления: ";
+    cin >> newZnach; 
+    
+    pTEK=pSTART1;
+    for(int j=0; j<elemsCount; j++)
+    {
+        if(pTEK->ELEM==znach)
+        {
+            newTek=(struct el*)(malloc(sizeof(EL1)));;
+            newTek->pred=pTEK;
+            newTek->ELEM=newZnach;
+            newTek->posl=pTEK->posl;
+            pTEK->posl=newTek;
+            elemsCount++;
+            if (regime)
+            {
+                j=elemsCount;
+            }
+        }
+        pTEK=pTEK->posl;
+    };
+    
+    
+    pTEK=pSTART1;
+    for(int j=0; j<elemsCount; j++)
+    {
+        cout << "\n номер: " << j << "elem: " << pTEK->ELEM << "\n"; 
+        pTEK=pTEK->posl;
+    }
+    
+    return 0;
+}
