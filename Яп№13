@@ -1,0 +1,161 @@
+
+
+//*******************************************************************************/
+#include <stdio.h>
+#include <iostream>
+
+using namespace std;
+
+class  MyClass{
+    
+//========================PUBLIC==============================
+    public:
+        
+      string (MyClass::*getArr[3])   () = {&MyClass::getName
+                                          ,&MyClass::getStatus
+                                          ,&MyClass::getRole};
+      
+      void (MyClass::*setArr[3]) (string)={&MyClass::setName
+                                          ,&MyClass::setStatus
+                                          ,&MyClass::setRole};
+      
+      typedef void (MyClass::*setTestNamePtr) ();
+      setTestNamePtr stnp = &MyClass::setTestName;
+//    string (MyClass::*getNamePtr) ();
+//    getNamePtr = &MyClass::getName;
+    
+//-------------GETTER-SETTER----------------------
+        void setName (string n){
+            name = n;
+        } 
+        string getName (){
+            return name;
+        }
+        
+        
+        
+        void setStatus (string s){
+            status = s;
+        }
+        string getStatus (){
+            return status;
+        }
+        
+        void setRole (string r){
+            role = r;
+        }
+        string getRole (){
+            return role;
+        }
+        
+        void setHP (float h){
+            hp = h;
+        }
+        float getHP (){
+            return hp;
+        }
+        
+        void setDMG (float d){
+            dmg = d;
+        }
+        float getDMG (){
+            return dmg;
+        }
+        
+        void setSpeed (float s){
+            speed = s;
+        }
+        float getSpeed (){
+            return speed;
+        }
+//-----------------------------------------------
+        void tellAboutHero ()
+        {
+            cout << '\n';
+            cout << "hero: \n";
+            cout << "   " << "name: "   << name   << '\n';
+            cout << "   " << "status: " << status << '\n';
+            cout << "   " << "role: "   << role   << '\n';
+            cout << "   " << "hp: "     << hp     << '\n';
+            cout << "   " << "damage: " << dmg  << '\n';
+            cout << "   " << "speed: "  << speed  << '\n';
+        }
+//------------------Constructors-----------------
+        MyClass(string nm, string st, string r, float h, float d, float s){
+            name = nm;
+            status = st;
+            role = r;
+            hp= h;
+            dmg = d;
+            speed = s;
+        }
+        
+        MyClass (){
+            name = "default";
+            status = "default";
+            role = "default";
+            hp = 6.0;
+            dmg = 3.5;
+            speed = 1.0;
+        }
+        
+//--------------------------------------------------
+        
+        void updgradeHero (){
+            dmgUp();
+            hpUp();
+            speedBoost();
+        }
+        
+        void downgradeHero (){
+            
+        }
+        
+        void setTestName () {
+            name = "test";
+        }
+//========================PROTECTED==============================
+    protected:
+        string name;
+        string status;
+        string role;
+    
+        void dmgUp ()
+        {
+            dmg += 1;
+        }
+
+        void hpUp ()
+        {
+            hp += 1;
+        }
+
+        void dmgDown ()
+        {
+            dmg -= 1;
+        }
+//========================PRIVATE=================================
+    private:
+        float hp;
+        float dmg;
+        float speed;
+    
+        void speedBoost ()
+        {
+            speed *=2;
+        }
+//================================================================
+};
+
+int main()
+{
+    MyClass* hero = new MyClass("Isaac","Holy","Warrior",10, 4, 1); 
+
+    hero->tellAboutHero();
+    
+    cout << '\n' << "====================" << '\n';
+    
+    (hero->*hero->setArr[2])("NewRole");
+    hero->tellAboutHero();
+    return 0;
+}
